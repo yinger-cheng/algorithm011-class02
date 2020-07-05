@@ -1,4 +1,4 @@
-package Week_01
+package main
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 func main() {
 	nums := []int{0,2,3,6,0,1,0,8}
 	moveZeroes(nums)
+	moveZeroes1(nums)
 }
 
 
@@ -19,8 +20,21 @@ func moveZeroes(nums []int) {
 		}else{
 			index ++
 		}
-		fmt.Println("------------")
-		fmt.Println(i,nums)
+	}
+	fmt.Println(nums)
+	return
+}
+
+func moveZeroes1(nums []int) {
+	j := 0
+	for i := 0 ;i < len(nums) ;i++{
+		if nums[i] != 0 {
+			nums[j] = nums[i]
+			if i != j {
+				nums[i] = 0
+			}
+			j++
+		}
 	}
 	fmt.Println(nums)
 	return
