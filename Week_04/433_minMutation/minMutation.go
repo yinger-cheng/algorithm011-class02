@@ -3,59 +3,54 @@ package main
 import "fmt"
 
 func main(){
-	start := "AACCGGTT"
-	end := "AACCGGTA"
-	bank := []string{"AACCGGTA"}
+	start := "AAAAACCC"
+	end := "AACCCCCC"
+	bank := []string{"AAAACCCC", "AAACCCCC", "AACCCCCC"}
 	fmt.Println(minMutation(start,end,bank))
 }
-
 var mutationMap = map[uint8][3]string{
-	'A': [...]string{"T", "G", "C"},
-	'C': [...]string{"T", "G", "A"},
-	'T': [...]string{"A", "G", "C"},
-	'G': [...]string{"T", "A", "C"},
+	'A': [...]string{"T","G","C"},
+	'C': [...]string{"T","G","A"},
+	'T': [...]string{"A","G","C"},
+	'G': [...]string{"T","A","C"},
 }
-
-func idxOf(str string, bank []string) int {
-	for i, s := range bank {
+func idxOf(str string, bank []string) int{
+	for i , s := range bank {
 		if s == str {
 			return i
 		}
 	}
 	return -1
 }
-
-func minMutation(start string, end string, bank []string) int {
-	if idxOf(end, bank) == -1 {
+func minMutation(start string, end string,bank []string) int {
+	if idxOf(end,bank) == -1 {
 		return -1
 	}
 	minCount := len(bank) + 1
 	isUsed := make([]bool, len(bank))
-
-	var dfs func(curr string, count int)
+	var dfs func(curr string,count int)
 	dfs = func(curr string, count int) {
 		if count >= minCount {
 			return
 		}
 		if curr == end {
-			if count < minCount {
+			if count <= minCount{
 				minCount = count
 			}
 			return
 		}
-
 		for i := 0; i < len(curr); i++ {
-			for _, c := range mutationMap[curr[i]] {
+			for _, c := range mutationMap[curr[i]]{
 				gene := curr[:i] + c + curr[i+1:]
-				if idx := idxOf(gene, bank); idx != -1 && !isUsed[idx] {
+				if idx := idxOf(gene,bank); idx != -1 && !isUsed[idx]{
 					isUsed[idx] = true
-					dfs(gene, count+1)
+					dfs(gene,count + 1)
 					isUsed[idx] = false
 				}
 			}
 		}
 	}
-	dfs(start, 0)
+	dfs(start,0)
 	if minCount <= len(bank) {
 		return minCount
 	}
